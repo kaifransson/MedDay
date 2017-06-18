@@ -1,7 +1,7 @@
 module Main where
 
-import           Lib
 import           Control.Monad.Trans.Except
+import           Lib
 
 main :: IO ()
 main = do

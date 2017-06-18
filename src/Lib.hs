@@ -1,16 +1,15 @@
-{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE FlexibleContexts      #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
 
 module Lib
     ( currentMedDay
     ) where
 
-import             Control.Monad.Trans
-import             Control.Monad.Error.Class
-import             Control.Monad.Trans.Either
-import             Data.Dates
-import             Data.Ini
-import             Data.Text
-import qualified   Data.HashMap.Strict as M
+import           Control.Monad.Error.Class
+import           Control.Monad.Trans
+import           Data.Dates
+import           Data.Ini
+import           Data.Text
 
 data MedDay = Arms
             | Legs
