@@ -17,19 +17,16 @@ data MedsConfig = Config { getStartDate   :: DateTime
                          , getCurrentDate :: DateTime
                          , getStartMedDay :: MedDay }
 
-calcShit :: MedsConfig -> MedDay
-calcShit config = let startDay = getStartDate config
-                      today = getCurrentDate config
-                      smd = getStartMedDay config
-                      daysPassed = datesDifference today startDay
-                   in if even daysPassed
-                        then smd
-                        else flop smd
-                where flop Arms = Legs
-                      flop Legs = Arms
-
 currentMedDay :: ( MonadReader MedsConfig m )
                  => m MedDay
 currentMedDay = do
     config <- ask
-    return $ calcShit config
+    let startDay = getStartDate config
+    let today = getCurrentDate config
+    let smd = getStartMedDay config
+    let daysPassed = datesDifference today startDay
+    return $ if even daysPassed
+                then smd
+                else flop smd
+    where flop Arms = Legs
+          flop Legs = Arms
