@@ -21,12 +21,14 @@ startDay = pack "StartDay"
 
 startMedDay = pack "StartMedDay"
 
-readIni :: IO Ini
+readIni :: ( MonadIO m
+           , MonadError String m )
+           => m Ini
 readIni = do
-    (Right ini) <- readIniFile configPath
-    return ini
+    ini <- liftIO $ readIniFile configPath
+    liftEither ini
 
-liftEither :: ( Monad m
+liftEither :: ( Monad m -- Data.Ini insists on returning concrete Either types
               , MonadError e m )
               => Either e r -> m r
 liftEither = either throwError return
@@ -35,7 +37,7 @@ loadConfig :: ( MonadIO m
               , MonadError String m )
               => m MedsConfig
 loadConfig = do
-    ini <- liftIO readIni
+    ini <- readIni
     let get key = liftEither $ read . unpack <$> lookupValue configg key ini
     sy <- get startYear
     sm <- get startMonth
