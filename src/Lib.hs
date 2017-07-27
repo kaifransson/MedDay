@@ -6,6 +6,7 @@ module Lib
     ) where
 
 import           Control.Monad.Error.Class
+import           Control.Monad.Reader.Class
 import           Control.Monad.Trans
 import           Data.Dates
 import           Data.Ini
@@ -42,9 +43,10 @@ calcShit ini today = do
           flop Legs = Arms
 
 currentMedDay :: ( MonadIO m
-                 , MonadError String m )
+                 , MonadError String m
+                 , MonadReader DateTime m )
                  => m MedDay
 currentMedDay = do
-    today <- liftIO getCurrentDateTime
+    today <- ask
     (Right ini) <- liftIO $ readIniFile configPath
     either throwError return (calcShit ini today)
