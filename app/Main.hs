@@ -15,13 +15,11 @@ configPath = "app\\config.ini"
 
 configg = pack "CONFIG"
 
-startMedDay = pack "StartMedDay"
-
 startYear = pack "StartYear"
 startMonth = pack "StartMonth"
 startDay = pack "StartDay"
 
-startDate = pack "StartDate"
+startMedDay = pack "StartMedDay"
 
 readIni :: IO Ini
 readIni = do
