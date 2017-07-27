@@ -3,9 +3,7 @@
 
 module Main where
 
-import           Control.Monad
 import           Control.Monad.Except
-import           Control.Monad.Trans
 import           Control.Monad.Trans.Reader
 import           Data.Dates
 import           Data.Ini

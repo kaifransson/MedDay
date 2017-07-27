@@ -6,9 +6,7 @@ module Lib
     , MedsConfig (Config)
     ) where
 
-import           Control.Monad.Error.Class
 import           Control.Monad.Reader.Class
-import           Control.Monad.Trans
 import           Data.Dates
 
 data MedDay = Arms
@@ -24,13 +22,13 @@ calcShit config = let startDay = getStartDate config
                       today = getCurrentDate config
                       smd = getStartMedDay config
                       daysPassed = datesDifference today startDay
-                   in if even daysPassed then smd else flop smd
+                   in if even daysPassed
+                        then smd
+                        else flop smd
                 where flop Arms = Legs
                       flop Legs = Arms
 
-currentMedDay :: ( MonadIO m
-                 , MonadError String m
-                 , MonadReader MedsConfig m )
+currentMedDay :: ( MonadReader MedsConfig m )
                  => m MedDay
 currentMedDay = do
     config <- ask
