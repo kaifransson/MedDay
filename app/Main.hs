@@ -9,7 +9,8 @@ import           Lib
 main :: IO ()
 main = do
     today <- getCurrentDateTime
-    result <- runExceptT $ runReaderT currentMedDay today
+    let config = Config undefined today
+    result <- runExceptT $ runReaderT currentMedDay config
     either oops yay result
     void getLine
     where oops = putStrLn

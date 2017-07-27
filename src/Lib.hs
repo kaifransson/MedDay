@@ -3,6 +3,7 @@
 
 module Lib
     ( currentMedDay
+    , MedsConfig (Config)
     ) where
 
 import           Control.Monad.Error.Class
@@ -15,6 +16,9 @@ import           Data.Text
 data MedDay = Arms
             | Legs
             deriving (Eq, Show, Read)
+
+data MedsConfig = Config { getStartDate   :: DateTime
+                         , getCurrentDate :: DateTime }
 
 configPath :: FilePath
 configPath = "app\\config.ini"
@@ -44,9 +48,9 @@ calcShit ini today = do
 
 currentMedDay :: ( MonadIO m
                  , MonadError String m
-                 , MonadReader DateTime m )
+                 , MonadReader MedsConfig m )
                  => m MedDay
 currentMedDay = do
-    today <- ask
+    today <- getCurrentDate <$> ask
     (Right ini) <- liftIO $ readIniFile configPath
     either throwError return (calcShit ini today)
