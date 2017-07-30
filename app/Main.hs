@@ -9,11 +9,9 @@ import           Data.Dates
 import           Data.Ini
 import           Data.Text
 import           Lib
+import           Paths_Meds
 
-configPath :: FilePath
-configPath = "app\\config.ini"
-
-configg = pack "CONFIG"
+configg = pack "CONFIG" -- name shadowing happened so I should figure out a better name
 
 startYear = pack "StartYear"
 startMonth = pack "StartMonth"
@@ -25,6 +23,7 @@ readIni :: ( MonadIO m
            , MonadError String m )
            => m Ini
 readIni = do
+    configPath <- liftIO $ getDataFileName "config.ini"
     ini <- liftIO $ readIniFile configPath
     liftEither ini
 
