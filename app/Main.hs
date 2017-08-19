@@ -1,5 +1,6 @@
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE OverloadedStrings     #-}
 
 module Main where
 
@@ -11,13 +12,13 @@ import           Data.Text
 import           Lib
 import           Paths_Meds
 
-configg = pack "CONFIG" -- name shadowing happened so I should figure out a better name
+configg = "CONFIG" -- name shadowing happened so I should figure out a better name
 
-startYear = pack "StartYear"
-startMonth = pack "StartMonth"
-startDay = pack "StartDay"
+startYear = "StartYear"
+startMonth = "StartMonth"
+startDay = "StartDay"
 
-startMedDay = pack "StartMedDay"
+startMedDay = "StartMedDay"
 
 readIni :: ( MonadIO m
            , MonadError String m )
