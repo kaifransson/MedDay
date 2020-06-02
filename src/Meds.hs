@@ -1,23 +1,19 @@
 {-# LANGUAGE FlexibleContexts      #-}
-{-# LANGUAGE MultiParamTypeClasses #-}
-
 module Meds
   ( currentMedDay
-  , MedsConfig(..)
   ) where
 
 import           Control.Monad.Reader (MonadReader(..))
-import           Data.Time (diffDays)
+import           Data.Time (Day, diffDays)
 import           Meds.Config (MedsConfig(..), MedDay(..))
 
 currentMedDay ::
      MonadReader MedsConfig m
-  => m MedDay
-currentMedDay = do
+  => Day -> m MedDay
+currentMedDay today = do
     config <- ask
-    let startDay = getStartDate config
-    let today = getCurrentDate config
-    let smd = getStartMedDay config
+    let startDay = startDate config
+    let smd = startMedDay config
     let daysPassed = diffDays today startDay
     return $ if even daysPassed
                 then smd

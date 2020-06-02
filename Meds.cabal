@@ -34,8 +34,8 @@ library
     Meds.Config
     Meds.Main
   build-depends:
+    , aeson
     , base
-    , ini
     , mtl
     , text
     , time
