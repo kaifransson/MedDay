@@ -2,7 +2,9 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
 
-module Main where
+module Main
+  ( main
+  ) where
 
 import qualified Meds.Main as Meds
 

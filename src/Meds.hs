@@ -7,7 +7,7 @@ module Meds
   ) where
 
 import           Control.Monad.Reader (MonadReader(..))
-import           Data.Dates (datesDifference)
+import           Data.Time (diffDays)
 import           Meds.Config (MedsConfig(..), MedDay(..))
 
 currentMedDay ::
@@ -18,7 +18,7 @@ currentMedDay = do
     let startDay = getStartDate config
     let today = getCurrentDate config
     let smd = getStartMedDay config
-    let daysPassed = datesDifference today startDay
+    let daysPassed = diffDays today startDay
     return $ if even daysPassed
                 then smd
                 else flop smd

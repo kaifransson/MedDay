@@ -7,7 +7,7 @@ module Meds.Main
 import           Control.Monad.Except (MonadError, liftEither, runExceptT)
 import           Control.Monad.IO.Class (MonadIO(..))
 import           Control.Monad.Reader (runReaderT)
-import           Data.Dates (DateTime(..), getCurrentDateTime)
+import           Data.Time (UTCTime(..), getCurrentTime, fromGregorian)
 import           Data.Functor (void)
 import           Data.Ini (Ini, readIniFile, lookupValue)
 import           Data.Text (Text, unpack)
@@ -39,21 +39,22 @@ loadConfig ::
   => MonadError String m
   => m MedsConfig
 loadConfig = do
-    ini <- readIni
-    let get key = liftEither $ read . unpack <$> lookupValue configg key ini
-    sy <- get startYear
-    sm <- get startMonth
-    sd <- get startDay
-    let sdt = DateTime sy sm sd 0 0 0
-    smd <- get startMedDay
-    today <- liftIO getCurrentDateTime
-    return $ Config sdt today smd
+  ini <- readIni
+  let get key = liftEither $ read . unpack <$> lookupValue configg key ini
+  sy <- get startYear
+  sm <- get startMonth
+  sd <- get startDay
+  let sdt = fromGregorian sy sm sd
+  smd <- get startMedDay
+  today <- utctDay <$> liftIO getCurrentTime
+  return $ Config sdt today smd
 
 main :: IO ()
 main = do
-    (Right config) <- runExceptT loadConfig
-    result <- runExceptT $ runReaderT currentMedDay config
-    either oops yay result
-    void getLine
-    where oops = putStrLn
-          yay = print
+  (Right config) <- runExceptT loadConfig
+  result <- runExceptT $ runReaderT currentMedDay config
+  either oops yay result
+  void getLine
+  where
+    oops = putStrLn
+    yay = print

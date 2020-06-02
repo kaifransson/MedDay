@@ -4,11 +4,11 @@ module Meds.Config
   , MedDay(..)
   ) where
 
-import           Data.Dates (DateTime)
+import           Data.Time (Day)
 
 data MedsConfig = Config
-  { getStartDate   :: DateTime
-  , getCurrentDate :: DateTime
+  { getStartDate   :: Day
+  , getCurrentDate :: Day
   , getStartMedDay :: MedDay
   }
   deriving stock (Show, Eq)
