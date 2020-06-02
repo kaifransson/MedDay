@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 
-module Lib
+module Meds
     ( currentMedDay
     , MedsConfig (Config)
     ) where

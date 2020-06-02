@@ -4,14 +4,14 @@ module Meds.Main
   ( main
   ) where
 
-import           Control.Monad.IO.Class (MonadIO(..))
 import           Control.Monad.Except (MonadError, liftEither, runExceptT)
+import           Control.Monad.IO.Class (MonadIO(..))
 import           Control.Monad.Reader (runReaderT)
-import           Data.Ini (Ini, readIniFile, lookupValue)
 import           Data.Dates (DateTime(..), getCurrentDateTime)
 import           Data.Functor (void)
+import           Data.Ini (Ini, readIniFile, lookupValue)
 import           Data.Text (Text, unpack)
-import           Lib (MedsConfig, MedsConfig(..), currentMedDay)
+import           Meds (MedsConfig, MedsConfig(..), currentMedDay)
 import           Paths_Meds (getDataFileName)
 
 configg :: Text

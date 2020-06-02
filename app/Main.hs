@@ -4,7 +4,7 @@
 
 module Main where
 
-import qualified Meds.Main as Main
+import qualified Meds.Main as Meds
 
 main :: IO ()
-main = Main.main
+main = Meds.main
