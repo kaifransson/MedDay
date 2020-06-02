@@ -1,30 +1,20 @@
 {-# LANGUAGE FlexibleContexts      #-}
-{-# LANGUAGE MultiParamTypeClasses #-}
-
 module Meds
-    ( currentMedDay
-    , MedsConfig (Config)
-    ) where
+  ( currentMedDay
+  ) where
 
-import           Control.Monad.Reader.Class
-import           Data.Dates
+import           Control.Monad.Reader (MonadReader(..))
+import           Data.Time (Day, diffDays)
+import           Meds.Config (MedsConfig(..), MedDay(..))
 
-data MedDay = Arms
-            | Legs
-            deriving (Eq, Show, Read)
-
-data MedsConfig = Config { getStartDate   :: DateTime
-                         , getCurrentDate :: DateTime
-                         , getStartMedDay :: MedDay }
-
-currentMedDay :: ( MonadReader MedsConfig m )
-                 => m MedDay
-currentMedDay = do
+currentMedDay ::
+     MonadReader MedsConfig m
+  => Day -> m MedDay
+currentMedDay today = do
     config <- ask
-    let startDay = getStartDate config
-    let today = getCurrentDate config
-    let smd = getStartMedDay config
-    let daysPassed = datesDifference today startDay
+    let startDay = startDate config
+    let smd = startMedDay config
+    let daysPassed = diffDays today startDay
     return $ if even daysPassed
                 then smd
                 else flop smd
