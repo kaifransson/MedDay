@@ -10,22 +10,31 @@ extra-source-files:
 data-files:
   config.ini
 
+common globals
+  ghc-options:
+    -Wall -Werror -Wredundant-constraints
+
 library
+  import: globals
   hs-source-dirs:
     src
   exposed-modules:
-    Lib
+    Meds
+    Meds.Main
   build-depends:
     , base
-    , ini
     , dates
+    , either
+    , ini
     , mtl
     , text
-    , either
   default-language:
     Haskell2010
+  other-modules:
+    Paths_Meds
 
 executable Meds-exe
+  import: globals
   hs-source-dirs:
     app
   main-is:
@@ -33,12 +42,5 @@ executable Meds-exe
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
     , base
-    , ini
-    , mtl
-    , dates
-    , text
     , Meds
-    , transformers
   default-language:    Haskell2010
-  other-modules:
-    Paths_Meds
