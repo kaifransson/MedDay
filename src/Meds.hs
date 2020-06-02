@@ -2,23 +2,17 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 
 module Meds
-    ( currentMedDay
-    , MedsConfig (Config)
-    ) where
+  ( currentMedDay
+  , MedsConfig(..)
+  ) where
 
-import           Control.Monad.Reader.Class
-import           Data.Dates
+import           Control.Monad.Reader (MonadReader(..))
+import           Data.Dates (datesDifference)
+import           Meds.Config (MedsConfig(..), MedDay(..))
 
-data MedDay = Arms
-            | Legs
-            deriving (Eq, Show, Read)
-
-data MedsConfig = Config { getStartDate   :: DateTime
-                         , getCurrentDate :: DateTime
-                         , getStartMedDay :: MedDay }
-
-currentMedDay :: ( MonadReader MedsConfig m )
-                 => m MedDay
+currentMedDay ::
+     MonadReader MedsConfig m
+  => m MedDay
 currentMedDay = do
     config <- ask
     let startDay = getStartDate config

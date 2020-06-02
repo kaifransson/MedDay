@@ -20,6 +20,7 @@ library
     src
   exposed-modules:
     Meds
+    Meds.Config
     Meds.Main
   build-depends:
     , base
