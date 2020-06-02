@@ -28,11 +28,6 @@ readIni = do
     ini <- liftIO $ readIniFile configPath
     liftEither ini
 
-liftEither :: ( Monad m -- Data.Ini insists on returning concrete Either types
-              , MonadError e m )
-              => Either e r -> m r
-liftEither = either throwError return
-
 loadConfig :: ( MonadIO m
               , MonadError String m )
               => m MedsConfig
