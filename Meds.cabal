@@ -8,7 +8,7 @@ build-type:          Simple
 extra-source-files:
   README.md
 data-files:
-  config.ini
+  config.json
 
 common globals
   ghc-options:
@@ -19,8 +19,10 @@ common globals
     -Wno-unsafe
     -Wno-safe
     -Wno-missing-local-signatures
+    -Wno-missing-safe-haskell-mode
     -Wno-monomorphism-restriction
     -Wno-missing-import-lists
+    -Wno-prepositive-qualified-module
     -Wno-implicit-prelude
     -Werror
     -O2

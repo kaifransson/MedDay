@@ -1,14 +1,13 @@
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveAnyClass     #-}
+{-# LANGUAGE DeriveGeneric      #-}
 {-# LANGUAGE DerivingStrategies #-}
 module Meds.Config
   ( MedsConfig(..)
   , MedDay(..)
   ) where
 
-import           Data.Aeson (ToJSON, FromJSON)
-import           Data.Time (Day)
+import           Data.Aeson   (FromJSON, ToJSON)
+import           Data.Time    (Day)
 import           GHC.Generics (Generic)
 
 data MedsConfig = Config
