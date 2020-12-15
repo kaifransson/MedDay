@@ -41,12 +41,26 @@ library
     , base
     , mtl
     , natural-transformation
-    , text
     , time
   default-language:
     Haskell2010
   other-modules:
     Paths_Meds
+
+test-suite Meds-tests
+  type:                 exitcode-stdio-1.0
+  main-is:
+    Meds/Tests.hs
+  hs-source-dirs:
+    test
+  default-language:
+    Haskell2010
+  build-depends:
+    , Meds
+
+    , base
+    , time
+    , hedgehog
 
 executable Meds-exe
   import: globals
