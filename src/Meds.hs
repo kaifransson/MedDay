@@ -1,11 +1,10 @@
-{-# LANGUAGE FlexibleContexts      #-}
 module Meds
   ( currentMedDay
   ) where
 
-import           Data.Time (Day, diffDays)
-import           Meds.App (MedsAppT, withConfig)
-import           Meds.Config (MedsConfig(..), MedDay(..))
+import           Data.Time   (Day, diffDays)
+import           Meds.App    (MedsAppT, withConfig)
+import           Meds.Config (MedDay (..), MedsConfig (..))
 
 currentMedDay :: Monad m => Day -> MedsAppT m MedDay
 currentMedDay today = withConfig $ \config -> do
