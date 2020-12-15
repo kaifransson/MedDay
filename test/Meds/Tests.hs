@@ -2,22 +2,21 @@
 {-# LANGUAGE NumericUnderscores #-}
 {-# LANGUAGE OverloadedStrings  #-}
 module Meds.Tests
-  ( main
+  ( tests
   ) where
 
-import           Control.Applicative            (Applicative (liftA2))
-import           Data.Time
-import           Data.Time.Calendar.OrdinalDate (fromOrdinalDate)
-import           Hedgehog
-import qualified Hedgehog.Gen                   as Gen
-import           Hedgehog.Main
-import qualified Hedgehog.Range                 as Range
-import           Meds                           (currentMedDay)
-import           Meds.App                       (runMedsApp)
-import           Meds.Config                    (MedDay (..), MedsConfig (..))
+import           Data.Time      (Day, addDays, fromGregorian)
+import           Hedgehog       (Gen, Group (Group, groupName, groupProperties),
+                                 Property, checkParallel, forAll, property,
+                                 (/==), (===))
+import qualified Hedgehog.Gen   as Gen
+import qualified Hedgehog.Range as Range
+import           Meds           (currentMedDay)
+import           Meds.App       (runMedsApp)
+import           Meds.Config    (MedDay (..), MedsConfig (..))
 
-main :: IO ()
-main = defaultMain . pure . checkParallel $ Group
+tests :: IO Bool
+tests = checkParallel $ Group
   { groupName = "currentMedDay tests"
   , groupProperties =
     [ ("Even number of days gives identity", even_number_of_days_gives_identity)

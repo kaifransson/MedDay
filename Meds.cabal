@@ -50,7 +50,9 @@ library
 test-suite Meds-tests
   type:                 exitcode-stdio-1.0
   main-is:
-    Meds/Tests.hs
+    Main.hs
+  other-modules:
+    Meds.Tests
   hs-source-dirs:
     test
   default-language:
