@@ -8,14 +8,15 @@ module Meds
   ) where
 
 import           Data.Aeson    (ToJSON)
-import           Data.Time     (diffDays)
+import           Data.Time     (Day, diffDays)
 import           GHC.Generics  (Generic)
 import           Meds.App      (MedsAppT, withConfig)
 import           Meds.Calendar (MonadCalendar (..))
 import           Meds.Config   (MedDay (..), MedsConfig (..))
 
-newtype MedDayInfo = MedDayInfo
-  { medDay :: MedDay
+data MedDayInfo = MedDayInfo
+  { medDay     :: MedDay
+  , currentDay :: Day
   }
   deriving stock (Generic)
   deriving anyclass (ToJSON)
@@ -32,6 +33,7 @@ currentMedDay = withConfig $ \config -> do
              else flop smd
   pure MedDayInfo
     { medDay
+    , currentDay = today
     }
   where
     flop Arms = Legs
