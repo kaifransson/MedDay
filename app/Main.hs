@@ -1,31 +1,31 @@
-{-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE TemplateHaskell #-}
 module Main
   ( main
   ) where
 
-import           Data.Aeson                 (eitherDecodeFileStrict)
+import           Data.Aeson                 (eitherDecodeStrict)
 import           Data.Aeson.Encode.Pretty   (encodePretty)
 import qualified Data.ByteString.Lazy.Char8 as LBS
+import           Data.FileEmbed             (embedFile)
 import           Data.Functor               (void)
 import           Meds                       (currentMedDay)
 import           Meds.App                   (runMedsAppT)
 import           Meds.Calendar              (runIOCalendarT)
 import           Meds.Config                (MedsConfig)
-import           Paths_Meds                 (getDataFileName)
 import           System.Exit                (exitFailure)
 
-loadConfig :: IO (Either String MedsConfig)
+loadConfig :: IO MedsConfig
 loadConfig =
-  getDataFileName "config.json" >>= eitherDecodeFileStrict
-
-main :: IO ()
-main = do
-  config <- loadConfig >>= \case
+  case eitherDecodeStrict $(embedFile "config.json") of
     Left err -> do
       putStrLn "Failed to deserialize config"
       putStrLn err
       exitFailure
     Right cfg -> pure cfg
+
+main :: IO ()
+main = do
+  config <- loadConfig
 
   (runIOCalendarT . runMedsAppT config) currentMedDay >>= LBS.putStrLn . encodePretty
   void getLine
