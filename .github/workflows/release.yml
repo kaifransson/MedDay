@@ -52,3 +52,4 @@ jobs:
       with:
         artifact: "release/*"
         token: ${{ secrets.GITHUB_TOKEN }}
+        tag: ${{ steps.tag_version.outputs.new_tag }}
