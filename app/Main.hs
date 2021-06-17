@@ -3,7 +3,8 @@ module Main
   ( main
   ) where
 
-import           Data.Aeson                 (eitherDecodeFileStrict, encode)
+import           Data.Aeson                 (eitherDecodeFileStrict)
+import           Data.Aeson.Encode.Pretty   (encodePretty)
 import qualified Data.ByteString.Lazy.Char8 as LBS
 import           Data.Functor               (void)
 import           Meds                       (currentMedDay)
@@ -26,5 +27,5 @@ main = do
       exitFailure
     Right cfg -> pure cfg
 
-  (runIOCalendarT . runMedsAppT config) currentMedDay >>= LBS.putStrLn . encode
+  (runIOCalendarT . runMedsAppT config) currentMedDay >>= LBS.putStrLn . encodePretty
   void getLine

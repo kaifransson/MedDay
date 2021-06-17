@@ -29,6 +29,7 @@ library
     Meds.Config
   build-depends:
     , aeson
+    , aeson-deriving
     , base
     , mtl
     , natural-transformation
@@ -67,6 +68,7 @@ executable Meds-exe
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
     , aeson
+    , aeson-pretty
     , base
     , bytestring
     , Meds
