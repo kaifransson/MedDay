@@ -1,17 +1,18 @@
-{-# LANGUAGE DeriveAnyClass     #-}
-{-# LANGUAGE DeriveGeneric      #-}
-{-# LANGUAGE DerivingStrategies #-}
-{-# LANGUAGE NamedFieldPuns     #-}
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric  #-}
+{-# LANGUAGE DerivingVia    #-}
+{-# LANGUAGE NamedFieldPuns #-}
 module Meds
   ( MedDayInfo (..)
   , currentMedDay
   ) where
 
-import           Data.Aeson   (ToJSON)
-import           Data.Time    (Day, diffDays)
-import           GHC.Generics (Generic)
-import           Meds.App     (MedsAppT, withConfig)
-import           Meds.Config  (MedDay (..), MedsConfig (..))
+import           Data.Aeson    (ToJSON)
+import           Data.Time     (diffDays)
+import           GHC.Generics  (Generic)
+import           Meds.App      (MedsAppT, withConfig)
+import           Meds.Calendar (MonadCalendar (..))
+import           Meds.Config   (MedDay (..), MedsConfig (..))
 
 newtype MedDayInfo = MedDayInfo
   { medDay :: MedDay
@@ -19,8 +20,9 @@ newtype MedDayInfo = MedDayInfo
   deriving stock (Generic)
   deriving anyclass (ToJSON)
 
-currentMedDay :: Monad m => Day -> MedsAppT m MedDayInfo
-currentMedDay today = withConfig $ \config -> do
+currentMedDay :: MonadCalendar m => MedsAppT m MedDayInfo
+currentMedDay = withConfig $ \config -> do
+  today <- getCurrentDate
   let
     startDay = startDate config
     smd = startMedDay config

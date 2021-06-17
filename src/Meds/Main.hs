@@ -6,9 +6,9 @@ module Meds.Main
 import           Data.Aeson                 (eitherDecodeFileStrict, encode)
 import qualified Data.ByteString.Lazy.Char8 as LBS
 import           Data.Functor               (void)
-import           Data.Time                  (UTCTime (..), getCurrentTime)
 import           Meds                       (currentMedDay)
 import           Meds.App                   (runMedsAppT)
+import           Meds.Calendar              (runIOCalendarT)
 import           Meds.Config                (MedsConfig)
 import           Paths_Meds                 (getDataFileName)
 import           System.Exit                (exitFailure)
@@ -19,7 +19,6 @@ loadConfig =
 
 main :: IO ()
 main = do
-  today <- utctDay <$> getCurrentTime
   config <- loadConfig >>= \case
     Left err -> do
       putStrLn "Failed to deserialize config"
@@ -27,5 +26,5 @@ main = do
       exitFailure
     Right cfg -> pure cfg
 
-  runMedsAppT config (currentMedDay today) >>= LBS.putStrLn . encode
+  (runIOCalendarT . runMedsAppT config) currentMedDay >>= LBS.putStrLn . encode
   void getLine

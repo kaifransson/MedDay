@@ -25,6 +25,7 @@ library
   exposed-modules:
     Meds
     Meds.App
+    Meds.Calendar
     Meds.Config
     Meds.Main
   build-depends:
@@ -54,6 +55,7 @@ test-suite Meds-tests
 
     , base
     , time
+    , transformers
     , hedgehog
 
 executable Meds-exe
