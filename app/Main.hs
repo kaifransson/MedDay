@@ -26,6 +26,6 @@ loadConfig =
 main :: IO ()
 main = do
   config <- loadConfig
-
-  (runIOCalendarT . runMedsAppT config) currentMedDay >>= LBS.putStrLn . encodePretty
+  output <- runIOCalendarT . runMedsAppT config $ currentMedDay
+  LBS.putStrLn . encodePretty $ output
   void getLine

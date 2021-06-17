@@ -1,0 +1,52 @@
+name: Branch builds
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  release:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: haskell/actions/setup@v1
+      with:
+        ghc-version: '8.10'
+
+    - name: Cache ~/.cabal/packages, ~/.cabal/store and dist-newstyle
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.cabal/packages
+          ~/.cabal/store
+          dist-newstyle
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('**/cabal.project') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+
+    - name: Install dependencies
+      run: |
+        cabal update
+        cabal build -j -O2 --only-dependencies --enable-tests --enable-benchmarks
+
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+
+    - name: Build executable
+      run: |
+        cabal build -j -O2 Meds-exe
+        mkdir -p release
+        find dist-newstyle/ -name Meds-exe -type f | xargs -I{} cp {} release/Meds-exe-${{ steps.get_version.outputs.VERSION }}
+
+    - name: Create release
+      uses: ncipollo/release-action@v1
+      with:
+        artifact: "release/*"
+        token: ${{ secrets.GITHUB_TOKEN }}
