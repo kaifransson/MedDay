@@ -27,7 +27,6 @@ library
     Meds.App
     Meds.Calendar
     Meds.Config
-    Meds.Main
   build-depends:
     , aeson
     , base
@@ -38,7 +37,6 @@ library
   default-language:
     Haskell2010
   other-modules:
-    Paths_Meds
 
 test-suite Meds-tests
   type:                 exitcode-stdio-1.0
@@ -64,8 +62,12 @@ executable Meds-exe
     app
   main-is:
     Main.hs
+  other-modules:
+    Paths_Meds
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
+    , aeson
     , base
+    , bytestring
     , Meds
   default-language:    Haskell2010
