@@ -28,6 +28,7 @@ jobs:
 
     - name: Install dependencies
       run: |
+        echo hello?
         cabal update
         cabal build -j --only-dependencies --enable-tests --enable-benchmarks
 
