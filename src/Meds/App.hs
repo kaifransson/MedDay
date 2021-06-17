@@ -1,7 +1,6 @@
-{-# LANGUAGE DerivingStrategies         #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE RankNTypes                 #-}
-{-# LANGUAGE TypeOperators              #-}
+{-# LANGUAGE DerivingVia   #-}
+{-# LANGUAGE RankNTypes    #-}
+{-# LANGUAGE TypeOperators #-}
 module Meds.App
   ( MedsAppT
   , runMedsAppT
@@ -11,11 +10,19 @@ module Meds.App
 
 import           Control.Monad.Identity (Identity (runIdentity))
 import           Control.Monad.Reader   (ReaderT (..), ask)
+import           Control.Monad.Trans    (MonadTrans)
 import           Control.Natural        (type (~>))
 import           Meds.Config            (MedsConfig)
 
 newtype MedsAppT m a = MedsAppT { unMedsAppT :: ReaderT MedsConfig m a }
-  deriving newtype (Functor, Applicative, Monad)
+  deriving
+    ( Functor
+    , Applicative
+    , Monad
+    ) via ReaderT MedsConfig m
+  deriving
+    ( MonadTrans
+    ) via ReaderT MedsConfig
 
 type MedsApp = MedsAppT Identity
 
