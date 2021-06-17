@@ -11,7 +11,7 @@ import           Hedgehog       (Gen, Group (Group, groupName, groupProperties),
                                  (/==), (===))
 import qualified Hedgehog.Gen   as Gen
 import qualified Hedgehog.Range as Range
-import           Meds           (currentMedDay)
+import           Meds           (MedDayInfo (..), currentMedDay)
 import           Meds.App       (runMedsApp)
 import           Meds.Config    (MedDay (..), MedsConfig (..))
 
@@ -27,31 +27,39 @@ tests = checkParallel $ Group
 even_number_of_days_gives_identity :: Property
 even_number_of_days_gives_identity = property $ do
   startDate <- forAll day
-  startMedDay <- forAll medDay
+  startMedDay <- forAll randomMedDay
   daysPassed <- forAll $ Gen.filter even . Gen.integral $ Range.linear 0 10_000
   let
     config = Config
       { startDate
       , startMedDay
       }
-    today'sMedDay = runMedsApp config $ currentMedDay (addDays daysPassed startDate)
+    today'sMedDay =
+      medDay
+      . runMedsApp config
+      . currentMedDay
+      $ addDays daysPassed startDate
   today'sMedDay === startMedDay
 
 odd_number_of_days_gives_new_med_day :: Property
 odd_number_of_days_gives_new_med_day = property $ do
   startDate <- forAll day
-  startMedDay <- forAll medDay
+  startMedDay <- forAll randomMedDay
   daysPassed <- forAll $ Gen.filter odd . Gen.integral $ Range.linear 0 10_000
   let
     config = Config
       { startDate
       , startMedDay
       }
-    today'sMedDay = runMedsApp config $ currentMedDay (addDays daysPassed startDate)
+    today'sMedDay =
+      medDay
+      . runMedsApp config
+      . currentMedDay
+      $ addDays daysPassed startDate
   today'sMedDay /== startMedDay
 
-medDay :: Gen MedDay
-medDay = Gen.element [Arms, Legs]
+randomMedDay :: Gen MedDay
+randomMedDay = Gen.element [Arms, Legs]
 
 day :: Gen Day
 day = do

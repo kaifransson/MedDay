@@ -1,17 +1,17 @@
-{-# LANGUAGE EmptyCase #-}
 {-# LANGUAGE LambdaCase #-}
 module Meds.Main
   ( main
   ) where
 
-import           Data.Aeson (eitherDecodeFileStrict)
-import           Data.Time (UTCTime(..), getCurrentTime)
-import           Data.Functor (void)
-import           Meds (currentMedDay)
-import           Meds.App (runMedsAppT)
-import           Meds.Config (MedsConfig)
-import           System.Exit (exitFailure)
-import           Paths_Meds (getDataFileName)
+import           Data.Aeson                 (eitherDecodeFileStrict, encode)
+import qualified Data.ByteString.Lazy.Char8 as LBS
+import           Data.Functor               (void)
+import           Data.Time                  (UTCTime (..), getCurrentTime)
+import           Meds                       (currentMedDay)
+import           Meds.App                   (runMedsAppT)
+import           Meds.Config                (MedsConfig)
+import           Paths_Meds                 (getDataFileName)
+import           System.Exit                (exitFailure)
 
 loadConfig :: IO (Either String MedsConfig)
 loadConfig =
@@ -27,5 +27,5 @@ main = do
       exitFailure
     Right cfg -> pure cfg
 
-  runMedsAppT config (currentMedDay today) >>= print
+  runMedsAppT config (currentMedDay today) >>= LBS.putStrLn . encode
   void getLine

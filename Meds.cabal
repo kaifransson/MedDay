@@ -12,20 +12,11 @@ data-files:
 
 common globals
   ghc-options:
-    -Weverything
-    -Wno-missing-exported-signatures
-    -Wno-missed-specialisations
-    -Wno-all-missed-specialisations
-    -Wno-unsafe
-    -Wno-safe
-    -Wno-missing-local-signatures
-    -Wno-missing-safe-haskell-mode
-    -Wno-monomorphism-restriction
-    -Wno-missing-import-lists
-    -Wno-prepositive-qualified-module
-    -Wno-implicit-prelude
+    -Wall
     -Werror
-    -O2
+    -Wredundant-constraints
+    -Wpartial-fields
+    -fhide-source-paths
 
 library
   import: globals
@@ -42,6 +33,7 @@ library
     , mtl
     , natural-transformation
     , time
+    , bytestring
   default-language:
     Haskell2010
   other-modules:
