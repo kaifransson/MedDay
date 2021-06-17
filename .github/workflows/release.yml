@@ -50,5 +50,6 @@ jobs:
     - name: Create release
       uses: ncipollo/release-action@v1
       with:
-        artifact: "release/*"
+        artifacts: "release/*"
         token: ${{ secrets.GITHUB_TOKEN }}
+        tag: ${{ steps.tag_version.outputs.new_tag }}
